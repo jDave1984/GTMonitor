@@ -5,18 +5,17 @@ namespace GTM.app.Game.GameEntities
 {
     public class MilitaryGroup : IDatObject
     {
-        
         public int ID { get; set; }
         public string GroupName { get; set; }
         public List<string> RawData { get; set; }
 
         public void ConvertFromRawData()
         {
-            Debug.Print(this.RawData.Count.ToString());
-            if (this.RawData.Count > 0)
+            Debug.Print(RawData.Count.ToString());
+            if (RawData.Count > 0)
             {
-                this.ID = int.Parse(this.RawData[0]);
-                this.GroupName = this.RawData[1];
+                ID = int.Parse(RawData[0]);
+                GroupName = RawData[1];
             }
         }
     }

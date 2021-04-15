@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Windows.Forms.VisualStyles;
 using GTM.app.Game.GameEntities;
-using GTM.app.Utility;
 
 namespace GTM.app.Game
 {
     public static class GameConnection
     {
         /// <summary>
-        /// Default Root Folder for all game data
+        ///     Default Root Folder for all game data
         /// </summary>
         public static string RootFolder { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the folder that the last save was in
+        ///     Gets or sets the folder that the last save was in
         /// </summary>
         private static string LastSaveFolder { get; set; }
 
         /// <summary>
-        /// Gets the File Path of the last game saved. 
+        ///     Gets the File Path of the last game saved.
         /// </summary>
         /// <returns></returns>
         public static string GetLastSave()
@@ -43,7 +38,7 @@ namespace GTM.app.Game
         }
 
         /// <summary>
-        /// Reads the "groups.dat" file in the last saved filepath to return a list of Military Gropus
+        ///     Reads the "groups.dat" file in the last saved filepath to return a list of Military Gropus
         /// </summary>
         /// <returns></returns>
         public static List<MilitaryGroup> GetGroups()
@@ -53,14 +48,12 @@ namespace GTM.app.Game
             var rowsFromFile = GetRawDataFromDatFile(fileToRead, 33);
 
             foreach (var rd in rowsFromFile)
-            {
                 groups.Add(new MilitaryGroup
                 {
                     ID = int.Parse(rd[0]),
                     GroupName = rd[1]
                 });
-            }
-            
+
             return groups;
         }
 
@@ -71,7 +64,6 @@ namespace GTM.app.Game
             var rowsFromFile = GetRawDataFromDatFile(fileToRead, 63);
 
             foreach (var rd in rowsFromFile)
-            {
                 commanders.Add(new Commander
                 {
                     ID = int.Parse(rd[0]),
@@ -83,13 +75,12 @@ namespace GTM.app.Game
                     BirthYear = int.Parse(rd[16]),
                     History = rd[56]
                 });
-            }
 
             return commanders;
         }
 
         /// <summary>
-        /// Gets a list of regiments
+        ///     Gets a list of regiments
         /// </summary>
         /// <returns></returns>
         public static List<Regiment> GetRegiments()
@@ -99,7 +90,6 @@ namespace GTM.app.Game
             var rowsFromFile = GetRawDataFromDatFile(fileToRead, 40);
 
             foreach (var rd in rowsFromFile)
-            {
                 regiments.Add(new Regiment
                 {
                     ID = int.Parse(rd[0]),
@@ -110,7 +100,6 @@ namespace GTM.app.Game
                     Manpower = int.Parse(rd[6]),
                     History = rd[31]
                 });
-            }
 
             return regiments;
         }
@@ -123,7 +112,6 @@ namespace GTM.app.Game
             var rawData = new List<string>();
 
             foreach (var s in text)
-            {
                 if (counter > 0)
                 {
                     rawData.Add(s);
@@ -132,7 +120,7 @@ namespace GTM.app.Game
                     if (counter == numberOfColumns)
                     {
                         returnData.Add(new List<string>(rawData));
-                        
+
                         rawData.Clear();
                         counter = 1;
                     }
@@ -141,7 +129,6 @@ namespace GTM.app.Game
                 {
                     counter++;
                 }
-            }
 
             return returnData;
         }

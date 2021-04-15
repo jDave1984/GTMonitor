@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using GTM.app.Game;
-using GTM.app.Utility;
 
 namespace GTM.app
 {
     public partial class MainForm : Form
     {
-        string defaultFolder = @"X:\Games\SteamLibrary\steamapps\common\Grand Tactician The Civil War (1861-1865)";
-        
+        private readonly string defaultFolder =
+            @"X:\Games\SteamLibrary\steamapps\common\Grand Tactician The Civil War (1861-1865)";
+
         public MainForm()
         {
             GameConnection.RootFolder =

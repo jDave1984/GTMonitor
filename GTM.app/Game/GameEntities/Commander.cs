@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GTM.app.Game.GameEntities
 {
     public class Commander : IDatObject
     {
-        public List<string> RawData { get; set; }
         public int ID { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -13,10 +13,11 @@ namespace GTM.app.Game.GameEntities
         public int BirthMonth { get; set; }
         public int BirthYear { get; set; }
         public string History { get; set; }
-        
+        public List<string> RawData { get; set; }
+
         public void ConvertFromRawData()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
