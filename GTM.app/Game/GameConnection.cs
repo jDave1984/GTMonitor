@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using GTM.app.Game.GameEntities;
+using GTM.app.Utility;
 
 namespace GTM.app.Game
 {
@@ -45,13 +46,14 @@ namespace GTM.app.Game
         {
             var fileToRead = $"{LastSaveFolder}\\groups.dat";
             var groups = new List<MilitaryGroup>();
-            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 33);
+            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 32, true).ToList();
 
             foreach (var rd in rowsFromFile)
                 groups.Add(new MilitaryGroup
                 {
                     ID = int.Parse(rd[0]),
-                    GroupName = rd[1]
+                    GroupName = rd[1],
+                    RawData = rd
                 });
 
             return groups;
@@ -61,7 +63,7 @@ namespace GTM.app.Game
         {
             var fileToRead = $"{LastSaveFolder}\\commanders.txt";
             var commanders = new List<Commander>();
-            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 63);
+            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 62, true);
 
             foreach (var rd in rowsFromFile)
                 commanders.Add(new Commander
@@ -73,7 +75,8 @@ namespace GTM.app.Game
                     BirthDay = int.Parse(rd[14]),
                     BirthMonth = int.Parse(rd[15]),
                     BirthYear = int.Parse(rd[16]),
-                    History = rd[56]
+                    History = rd[56],
+                    RawData = rd
                 });
 
             return commanders;
@@ -87,7 +90,7 @@ namespace GTM.app.Game
         {
             var fileToRead = $"{LastSaveFolder}\\regiments.dat";
             var regiments = new List<Regiment>();
-            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 40);
+            var rowsFromFile = GetRawDataFromDatFile(fileToRead, 39, true);
 
             foreach (var rd in rowsFromFile)
                 regiments.Add(new Regiment
@@ -98,39 +101,19 @@ namespace GTM.app.Game
                     RegimentType = int.Parse(rd[4]),
                     CommanderID = int.Parse(rd[5]),
                     Manpower = int.Parse(rd[6]),
-                    History = rd[31]
+                    History = rd[31],
+                    RawData = rd
                 });
 
             return regiments;
         }
 
-        private static List<List<string>> GetRawDataFromDatFile(string fileName, int numberOfColumns)
+        private static List<List<string>> GetRawDataFromDatFile(string fileName, int numberOfColumns, bool skipFirstLine)
         {
-            var text = File.ReadLines(fileName);
-            var counter = 0;
-            var returnData = new List<List<string>>();
-            var rawData = new List<string>();
+            var text = File.ReadLines(fileName).ToList();
+            if (skipFirstLine) text.RemoveAt(0);
 
-            foreach (var s in text)
-                if (counter > 0)
-                {
-                    rawData.Add(s);
-                    counter++;
-
-                    if (counter == numberOfColumns)
-                    {
-                        returnData.Add(new List<string>(rawData));
-
-                        rawData.Clear();
-                        counter = 1;
-                    }
-                }
-                else
-                {
-                    counter++;
-                }
-
-            return returnData;
+            return text.Bucket(numberOfColumns).ToList();
         }
     }
 }

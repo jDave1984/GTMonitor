@@ -13,10 +13,5 @@ namespace GTM.app.Game.GameEntities
         public int Manpower { get; set; }
         public string History { get; set; }
         public List<string> RawData { get; set; }
-
-        public void ConvertFromRawData()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
